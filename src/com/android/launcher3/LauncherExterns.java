@@ -18,6 +18,8 @@ package com.android.launcher3;
 
 import android.content.SharedPreferences;
 
+import com.android.launcher3.listen.LauncherOverlay;
+
 /**
  * This interface defines the set of methods that the Launcher activity exposes. Methods
  * here should be safe to call from classes outside of com.android.launcher3.*
@@ -28,5 +30,5 @@ public interface LauncherExterns {
 
     SharedPreferences getSharedPrefs();
 
-    void setLauncherOverlay(Launcher.LauncherOverlay overlay);
+    void setLauncherOverlay(LauncherOverlay overlay);
 }

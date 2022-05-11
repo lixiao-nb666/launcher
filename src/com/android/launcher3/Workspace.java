@@ -56,7 +56,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
-import com.android.launcher3.Launcher.LauncherOverlay;
+
 import com.android.launcher3.LauncherAppWidgetHost.ProviderChangedListener;
 import com.android.launcher3.LauncherStateManager.AnimationConfig;
 import com.android.launcher3.accessibility.AccessibleDragListenerAdapter;
@@ -76,6 +76,7 @@ import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.folder.PreviewBackground;
 import com.android.launcher3.graphics.DragPreviewProvider;
 import com.android.launcher3.graphics.PreloadIconDrawable;
+import com.android.launcher3.listen.LauncherOverlay;
 import com.android.launcher3.pageindicators.WorkspacePageIndicator;
 import com.android.launcher3.popup.PopupContainerWithArrow;
 import com.android.launcher3.shortcuts.ShortcutDragPreviewProvider;
@@ -840,8 +841,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         int y = info.cellY;
         if (info.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
             int screenId = (int) info.screenId;
-            x = mLauncher.getHotseat().getCellXFromOrder(screenId);
-            y = mLauncher.getHotseat().getCellYFromOrder(screenId);
+            x = mLauncher.hotseatManager.getHotseat().getCellXFromOrder(screenId);
+            y = mLauncher.hotseatManager.getHotseat().getCellYFromOrder(screenId);
         }
         addInScreen(child, info.container, info.screenId, x, y, info.spanX, info.spanY);
     }
@@ -883,7 +884,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         final CellLayout layout;
         if (container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
-            layout = mLauncher.getHotseat().getLayout();
+            layout = mLauncher.hotseatManager.getHotseat().getLayout();
 
             // Hide folder title in the hotseat
             if (child instanceof FolderIcon) {
@@ -1514,7 +1515,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 @Override
                 protected void enableAccessibleDrag(boolean enable) {
                     super.enableAccessibleDrag(enable);
-                    setEnableForLayout(mLauncher.getHotseat().getLayout(),enable);
+                    setEnableForLayout(mLauncher.hotseatManager.getHotseat().getLayout(),enable);
                 }
             });
         }
@@ -1623,7 +1624,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
             // We want the point to be mapped to the dragTarget.
             if (mLauncher.isHotseatLayout(dropTargetLayout)) {
-                mapPointFromSelfToHotseatLayout(mLauncher.getHotseat(), mDragViewVisualCenter);
+                mapPointFromSelfToHotseatLayout(mLauncher.hotseatManager.getHotseat(), mDragViewVisualCenter);
             } else {
                 mapPointFromSelfToChild(dropTargetLayout, mDragViewVisualCenter);
             }
@@ -1829,7 +1830,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         // We want the point to be mapped to the dragTarget.
         if (dropTargetLayout != null) {
             if (mLauncher.isHotseatLayout(dropTargetLayout)) {
-                mapPointFromSelfToHotseatLayout(mLauncher.getHotseat(), mDragViewVisualCenter);
+                mapPointFromSelfToHotseatLayout(mLauncher.hotseatManager.getHotseat(), mDragViewVisualCenter);
             } else {
                 mapPointFromSelfToChild(dropTargetLayout, mDragViewVisualCenter);
             }
@@ -2022,7 +2023,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
     public void onNoCellFound(View dropTargetLayout) {
         if (mLauncher.isHotseatLayout(dropTargetLayout)) {
-            Hotseat hotseat = mLauncher.getHotseat();
+            Hotseat hotseat = mLauncher.hotseatManager.getHotseat();
             boolean droppedOnAllAppsIcon = !FeatureFlags.NO_ALL_APPS_ICON
                     && mTargetCell != null && !mLauncher.getDeviceProfile().inv.isAllAppsButtonRank(
                     hotseat.getOrderInHotseat(mTargetCell[0], mTargetCell[1]));
@@ -2215,7 +2216,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
        mTempXY[0] = x;
        mTempXY[1] = y;
        mLauncher.getDragLayer().getDescendantCoordRelativeToSelf(this, mTempXY, true);
-       View hotseat = mLauncher.getHotseat();
+       View hotseat = mLauncher.hotseatManager.getHotseat();
        return mTempXY[0] >= hotseat.getLeft() &&
                mTempXY[0] <= hotseat.getRight() &&
                mTempXY[1] >= hotseat.getTop() &&
@@ -2266,7 +2267,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (mDragTargetLayout != null) {
             // We want the point to be mapped to the dragTarget.
             if (mLauncher.isHotseatLayout(mDragTargetLayout)) {
-                mapPointFromSelfToHotseatLayout(mLauncher.getHotseat(), mDragViewVisualCenter);
+                mapPointFromSelfToHotseatLayout(mLauncher.hotseatManager.getHotseat(), mDragViewVisualCenter);
             } else {
                 mapPointFromSelfToChild(mDragTargetLayout, mDragViewVisualCenter);
             }
@@ -2338,9 +2339,9 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     private boolean setDropLayoutForDragObject(DragObject d, float centerX, float centerY) {
         CellLayout layout = null;
         // Test to see if we are over the hotseat first
-        if (mLauncher.getHotseat() != null && !isDragWidget(d)) {
+        if (mLauncher.hotseatManager.getHotseat() != null && !isDragWidget(d)) {
             if (isPointInSelfOverHotseat(d.x, d.y)) {
-                layout = mLauncher.getHotseat().getLayout();
+                layout = mLauncher.hotseatManager.getHotseat().getLayout();
             }
         }
 
@@ -3003,8 +3004,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         for (int screen = 0; screen < screenCount; screen++) {
             layouts.add(((CellLayout) getChildAt(screen)));
         }
-        if (mLauncher.getHotseat() != null) {
-            layouts.add(mLauncher.getHotseat().getLayout());
+        if (mLauncher.hotseatManager.getHotseat() != null) {
+            layouts.add(mLauncher.hotseatManager.getHotseat().getLayout());
         }
         return layouts;
     }
@@ -3020,8 +3021,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         for (int screen = 0; screen < screenCount; screen++) {
             childrenLayouts.add(((CellLayout) getChildAt(screen)).getShortcutsAndWidgets());
         }
-        if (mLauncher.getHotseat() != null) {
-            childrenLayouts.add(mLauncher.getHotseat().getLayout().getShortcutsAndWidgets());
+        if (mLauncher.hotseatManager.getHotseat() != null) {
+            childrenLayouts.add(mLauncher.hotseatManager.getHotseat().getLayout().getShortcutsAndWidgets());
         }
         return childrenLayouts;
     }

@@ -20,6 +20,9 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
+
+
     <com.android.launcher3.dragndrop.DragLayer
         android:id="@+id/drag_layer"
         android:layout_width="match_parent"
@@ -28,8 +31,7 @@
         android:clipToPadding="false"
         android:importantForAccessibility="no">
 
-        <!-- The workspace contains 5 screens of cells -->
-        <!-- DO NOT CHANGE THE ID -->
+        <!--        上面可拖拽的布局-->
         <com.android.launcher3.Workspace
             android:id="@+id/workspace"
             android:layout_width="match_parent"
@@ -45,6 +47,7 @@
 
         <!-- Keep these behind the workspace so that they are not visible when
          we go into AllApps -->
+        <!--        上拉手势提醒-->
         <com.android.launcher3.pageindicators.WorkspacePageIndicator
             android:id="@+id/page_indicator"
             android:layout_width="match_parent"
@@ -52,13 +55,18 @@
             android:layout_gravity="bottom|center_horizontal"
             android:theme="@style/HomeScreenElementTheme" />
 
+
+<!--        卸载，移除按钮-->
         <include
             android:id="@+id/drop_target_bar"
             layout="@layout/drop_target_bar" />
 
+        <!--       首页上半部分的手势遮盖-->
         <include android:id="@+id/scrim_view"
             layout="@layout/scrim_view" />
 
+
+        <!--       应用列表-->
         <include
             android:id="@+id/apps_view"
             layout="@layout/all_apps"
@@ -66,7 +74,7 @@
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
-        <!-- DO NOT CHANGE THE ID -->
+        <!--       底部悬浮控制器-->
         <include
             android:id="@+id/hotseat"
             layout="@layout/hotseat"

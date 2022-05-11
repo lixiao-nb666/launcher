@@ -28,9 +28,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.launcher3.Launcher.OnResumeCallback;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.dragndrop.DragOptions;
+import com.android.launcher3.listen.OnResumeCallback;
 import com.android.launcher3.logging.LoggerUtils;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;

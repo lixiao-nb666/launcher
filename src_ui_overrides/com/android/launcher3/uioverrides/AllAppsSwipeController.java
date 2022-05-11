@@ -6,9 +6,11 @@ import static com.android.launcher3.LauncherState.NORMAL;
 import android.view.MotionEvent;
 
 import com.android.launcher3.AbstractFloatingView;
+
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherState;
 import com.android.launcher3.LauncherStateManager.AnimationComponents;
+
 import com.android.launcher3.touch.AbstractStateChangeTouchController;
 import com.android.launcher3.touch.SwipeDetector;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
@@ -58,7 +60,7 @@ public class AllAppsSwipeController extends AbstractStateChangeTouchController {
 
     @Override
     protected int getLogContainerTypeForNormalState() {
-        return mLauncher.getDragLayer().isEventOverView(mLauncher.getHotseat(), mTouchDownEvent) ?
+        return mLauncher.getDragLayer().isEventOverView(mLauncher.hotseatManager.getHotseat(), mTouchDownEvent) ?
                 ContainerType.HOTSEAT : ContainerType.WORKSPACE;
     }
 

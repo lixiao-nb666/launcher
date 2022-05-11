@@ -16,13 +16,11 @@ apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -42,20 +40,20 @@ android {
     productFlavors {
         aosp {
             dimension "default"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
+            applicationId 'com.innocn.launcher'
+            testApplicationId 'com.innocn.launcher.tests'
         }
 
         l3go {
             dimension "default"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
+            applicationId 'com.innocn.launcher'
+            testApplicationId 'com.innocn.launcher.tests'
         }
 
         quickstep {
             dimension "default"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
+            applicationId 'com.innocn.launcher'
+            testApplicationId 'com.innocn.launcher.tests'
         }
     }
 

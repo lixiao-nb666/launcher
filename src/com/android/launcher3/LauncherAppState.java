@@ -145,9 +145,9 @@ public class LauncherAppState {
         }
     }
 
-    LauncherModel setLauncher(Launcher launcher) {
-        getLocalProvider(mContext).setLauncherProviderChangeListener(launcher);
-        mModel.initialize(launcher);
+    LauncherModel setLauncher(LauncherProviderChangeListener listener, LauncherModel.Callbacks callbacks) {
+        getLocalProvider(mContext).setLauncherProviderChangeListener(listener);
+        mModel.initialize(callbacks);
         return mModel;
     }
 

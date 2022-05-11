@@ -88,7 +88,7 @@ public class WorkspaceStateTransitionAnimation {
             Interpolator scaleInterpolator = builder.getInterpolator(ANIM_WORKSPACE_SCALE, ZOOM_OUT);
             propertySetter.setFloat(mWorkspace, SCALE_PROPERTY, mNewScale, scaleInterpolator);
             float hotseatIconsAlpha = (elements & HOTSEAT_ICONS) != 0 ? 1 : 0;
-            propertySetter.setViewAlpha(mLauncher.getHotseat().getLayout(), hotseatIconsAlpha,
+            propertySetter.setViewAlpha(mLauncher.hotseatManager.getHotseat().getLayout(), hotseatIconsAlpha,
                     fadeInterpolator);
             propertySetter.setViewAlpha(mLauncher.getWorkspace().getPageIndicator(),
                     hotseatIconsAlpha, fadeInterpolator);
@@ -105,7 +105,7 @@ public class WorkspaceStateTransitionAnimation {
         propertySetter.setFloat(mWorkspace, View.TRANSLATION_Y,
                 scaleAndTranslation[2], translationInterpolator);
 
-        propertySetter.setViewAlpha(mLauncher.getHotseatSearchBox(),
+        propertySetter.setViewAlpha(mLauncher.hotseatManager.getHotseatSearchBox(),
                 (elements & HOTSEAT_SEARCH_BOX) != 0 ? 1 : 0, fadeInterpolator);
 
         // Set scrim

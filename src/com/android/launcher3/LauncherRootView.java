@@ -22,17 +22,13 @@ public class LauncherRootView extends InsettableFrameLayout {
 
     @ViewDebug.ExportedProperty(category = "launcher")
     private final Rect mConsumedInsets = new Rect();
-
     private View mAlignedView;
     private WindowStateListener mWindowStateListener;
-
     public LauncherRootView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         mOpaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mOpaquePaint.setColor(Color.BLACK);
         mOpaquePaint.setStyle(Paint.Style.FILL);
-
         mLauncher = Launcher.getLauncher(context);
     }
 
@@ -66,15 +62,12 @@ public class LauncherRootView extends InsettableFrameLayout {
             insets = new Rect(0, insets.top, 0, insets.bottom);
             drawInsetBar = true;
         }
-
         mLauncher.getSystemUiController().updateUiState(
                 UI_STATE_ROOT_VIEW, drawInsetBar ? FLAG_DARK_NAV : 0);
-
         // Update device profile before notifying th children.
         mLauncher.getDeviceProfile().updateInsets(insets);
         boolean resetState = !insets.equals(mInsets);
         setInsets(insets);
-
         if (mAlignedView != null) {
             // Apply margins on aligned view to handle consumed insets.
             MarginLayoutParams lp = (MarginLayoutParams) mAlignedView.getLayoutParams();

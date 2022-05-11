@@ -83,7 +83,7 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
         mContent = findViewById(R.id.layout);
     }
 
-    void resetLayout(boolean hasVerticalHotseat) {
+   public void resetLayout(boolean hasVerticalHotseat) {
         mContent.removeAllViewsInLayout();
         mHasVerticalHotseat = hasVerticalHotseat;
         InvariantDeviceProfile idp = mLauncher.getDeviceProfile().inv;

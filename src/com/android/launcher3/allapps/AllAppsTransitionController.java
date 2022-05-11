@@ -103,7 +103,7 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
 
         if (mIsVerticalLayout) {
             mAppsView.setAlpha(1);
-            mLauncher.getHotseat().setTranslationY(0);
+            mLauncher.hotseatManager.getHotseat().setTranslationY(0);
             mLauncher.getWorkspace().getPageIndicator().setTranslationY(0);
         }
     }
@@ -126,7 +126,7 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
         float hotseatTranslation = -mShiftRange + shiftCurrent;
 
         if (!mIsVerticalLayout) {
-            mLauncher.getHotseat().setTranslationY(hotseatTranslation);
+            mLauncher.hotseatManager.getHotseat().setTranslationY(hotseatTranslation);
             mLauncher.getWorkspace().getPageIndicator().setTranslationY(hotseatTranslation);
         }
 
