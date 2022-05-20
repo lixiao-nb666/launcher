@@ -13,11 +13,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.launcher3.Hotseat
+<com.android.launcher3.views.hotseat.Hotseat
     android:theme="@style/HomeScreenElementTheme"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+
     xmlns:launcher="http://schemas.android.com/apk/res-auto">
 
     <com.android.launcher3.CellLayout
@@ -27,4 +28,4 @@
         android:layout_gravity="center"
         launcher:containerType="hotseat"
         android:importantForAccessibility="no" />
-</com.android.launcher3.Hotseat>
+</com.android.launcher3.views.hotseat.Hotseat>

@@ -25,14 +25,17 @@ public class AllAppManager {
     @Thunk AllAppsContainerView mAppsView;
     AllAppsTransitionController mAllAppsController;
     public  AllAppManager(Launcher launcher){
-
         mAllAppsController = new AllAppsTransitionController(launcher);
-
     }
 
     public void setDefView(AllAppsContainerView mAppsView){
         this.mAppsView=mAppsView;
         mAllAppsController.setupViews(mAppsView);
+    }
+
+
+    public void ScrollToAppsView(){
+//        mAllAppsController.setStateWithAnimation();
     }
 
     public void updateIconBadges(final Set<PackageUserKey> updatedBadges){

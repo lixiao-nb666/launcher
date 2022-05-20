@@ -30,6 +30,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 
@@ -350,6 +351,7 @@ public abstract class AbstractStateChangeTouchController
         config.duration = duration;
         for (StateHandler handler : mLauncher.getStateManager().getStateHandlers()) {
             handler.setStateWithAnimation(targetState, builder, config);
+            Log.i("lixiao","kankanzhuangtai: setStateWithAnimation222222");
         }
         return builder.build();
     }

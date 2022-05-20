@@ -79,7 +79,6 @@ public class LoaderResults {
      */
     public void bindWorkspace() {
         Runnable r;
-
         Callbacks callbacks = mCallbacks.get();
         // Don't use these two variables in any of the callback runnables.
         // Otherwise we hold a reference to them.

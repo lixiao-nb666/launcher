@@ -35,6 +35,7 @@ import android.animation.AnimatorSet;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.IntDef;
+import android.util.Log;
 
 import com.android.launcher3.anim.AnimationSuccessListener;
 import com.android.launcher3.anim.AnimatorPlaybackController;
@@ -200,6 +201,9 @@ public class LauncherStateManager {
 
     private void goToState(LauncherState state, boolean animated, long delay,
             final Runnable onCompleteRunnable) {
+        Log.i("lixiao","kankanzhuangtai: setStateWithAnimation33333---"+state);
+        Log.i("lixiao","kankanzhuangtai: setStateWithAnimation33333---"+animated+"---"+delay+"---");
+
         if (mLauncher.isInState(state)) {
             if (mConfig.mCurrentAnimation == null) {
                 // Run any queued runnable
@@ -335,6 +339,10 @@ public class LauncherStateManager {
     public AnimatorPlaybackController createAnimationToNewWorkspace(LauncherState state,
             AnimatorSetBuilder builder, long duration, Runnable onCancelRunnable,
             @AnimationComponents int animComponents) {
+        Log.i("lixiao","kankanzhuangtai: setStateWithAnimation4444---"+state);
+        Log.i("lixiao","kankanzhuangtai: setStateWithAnimation444---"+duration);
+
+
         mConfig.reset();
         mConfig.userControlled = true;
         mConfig.animComponents = animComponents;
@@ -351,6 +359,7 @@ public class LauncherStateManager {
         for (StateHandler handler : getStateHandlers()) {
             builder.startTag(handler);
             handler.setStateWithAnimation(state, builder, mConfig);
+            Log.i("lixiao","kankanzhuangtai: setStateWithAnimation11111111111111111");
         }
 
         final AnimatorSet animation = builder.build();

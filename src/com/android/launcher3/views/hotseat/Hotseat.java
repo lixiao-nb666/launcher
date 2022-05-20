@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.android.launcher3;
+package com.android.launcher3.views.hotseat;
 
 import static com.android.launcher3.LauncherState.ALL_APPS;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +33,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.launcher3.CellLayout;
+import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.Insettable;
+import com.android.launcher3.InsettableFrameLayout;
+import com.android.launcher3.InvariantDeviceProfile;
+import com.android.launcher3.ItemInfo;
+import com.android.launcher3.Launcher;
+import com.android.launcher3.R;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.logging.UserEventDispatcher.LogContainerProvider;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
@@ -64,16 +74,16 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
     }
 
     /* Get the orientation invariant order of the item in the hotseat for persistence. */
-    int getOrderInHotseat(int x, int y) {
+    public int getOrderInHotseat(int x, int y) {
         return mHasVerticalHotseat ? (mContent.getCountY() - y - 1) : x;
     }
 
     /* Get the orientation specific coordinates given an invariant order in the hotseat. */
-    int getCellXFromOrder(int rank) {
+    public int getCellXFromOrder(int rank) {
         return mHasVerticalHotseat ? 0 : rank;
     }
 
-    int getCellYFromOrder(int rank) {
+    public int getCellYFromOrder(int rank) {
         return mHasVerticalHotseat ? (mContent.getCountY() - (rank + 1)) : 0;
     }
 
@@ -84,15 +94,29 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
     }
 
    public void resetLayout(boolean hasVerticalHotseat) {
+
         mContent.removeAllViewsInLayout();
         mHasVerticalHotseat = hasVerticalHotseat;
         InvariantDeviceProfile idp = mLauncher.getDeviceProfile().inv;
-        if (hasVerticalHotseat) {
-            mContent.setGridSize(1, idp.numHotseatIcons);
-        } else {
-            mContent.setGridSize(idp.numHotseatIcons, 1);
-        }
 
+        switch (showType){
+            case DEF:
+                if (hasVerticalHotseat) {
+                    mContent.setGridSize(1, idp.numHotseatIcons);
+                } else {
+                    mContent.setGridSize(idp.numHotseatIcons, 1);
+                }
+                break;
+            case TOP:
+            case BOTTOM:
+                mContent.setGridSize(HotseatConfig.ShowNumb, 1);
+                break;
+            case LEFT:
+            case RIGHT:
+                mContent.setGridSize(1, idp.numHotseatIcons);
+                break;
+        }
+       Log.i("lixiao","kankancell多大:"+idp.numHotseatIcons);
         if (!FeatureFlags.NO_ALL_APPS_ICON) {
             // Add the Apps button
             Context context = getContext();
@@ -133,6 +157,12 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
         }
     }
 
+
+    /**
+     * 手势判断是否生效
+     * @param ev
+     * @return
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // We don't want any clicks to go through to the hotseat unless the workspace is in
@@ -152,25 +182,62 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
     public void setInsets(Rect insets) {
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayoutParams();
         DeviceProfile grid = mLauncher.getDeviceProfile();
-
-        if (grid.isVerticalBarLayout()) {
-            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            if (grid.isSeascape()) {
+        switch (showType){
+            case DEF:
+                if (grid.isVerticalBarLayout()) {
+                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    if (grid.isSeascape()) {
+                        lp.gravity = Gravity.LEFT;
+                        lp.width = grid.hotseatBarSizePx + insets.left;
+                    } else {
+                        lp.gravity = Gravity.RIGHT;
+                        lp.width = grid.hotseatBarSizePx + insets.right;
+                    }
+                } else {
+                    lp.gravity = Gravity.BOTTOM;
+                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    lp.height = grid.hotseatBarSizePx + insets.bottom;
+                }
+                break;
+            case LEFT:
+                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 lp.gravity = Gravity.LEFT;
                 lp.width = grid.hotseatBarSizePx + insets.left;
-            } else {
+                break;
+            case RIGHT:
+                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 lp.gravity = Gravity.RIGHT;
                 lp.width = grid.hotseatBarSizePx + insets.right;
-            }
-        } else {
-            lp.gravity = Gravity.BOTTOM;
-            lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            lp.height = grid.hotseatBarSizePx + insets.bottom;
+                break;
+            case TOP:
+                lp.gravity = Gravity.TOP;
+                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                lp.height = grid.hotseatBarSizePx + insets.top;
+                break;
+            case BOTTOM:
+                lp.gravity = Gravity.BOTTOM;
+                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                lp.height = grid.hotseatBarSizePx + insets.bottom;
+                break;
         }
+
         Rect padding = grid.getHotseatLayoutPadding();
         getLayout().setPadding(padding.left, padding.top, padding.right, padding.bottom);
-
         setLayoutParams(lp);
         InsettableFrameLayout.dispatchInsets(this, insets);
+
     }
+
+    HotseatShowType showType=HotseatShowType.BOTTOM;
+
+    public void setShowType(HotseatShowType setShowType){
+        if(setShowType==null){
+            return;
+        }
+        showType=setShowType;
+        resetLayout(mHasVerticalHotseat);
+
+    }
+
+
 }

@@ -203,7 +203,6 @@ public class DragLayer extends BaseDragLayer<Launcher> {
         return false;
     }
 
-
     private boolean isInAccessibleDrag() {
         return mActivity.getAccessibilityDelegate().isInAccessibleDrag();
     }
@@ -253,7 +252,6 @@ public class DragLayer extends BaseDragLayer<Launcher> {
         getViewRectRelativeToSelf(dragView, r);
         final int fromX = r.left;
         final int fromY = r.top;
-
         animateViewIntoPosition(dragView, fromX, fromY, pos[0], pos[1], alpha, 1, 1, scaleX, scaleY,
                 onFinishRunnable, animationEndStyle, duration, null);
     }
@@ -267,15 +265,12 @@ public class DragLayer extends BaseDragLayer<Launcher> {
         ShortcutAndWidgetContainer parentChildren = (ShortcutAndWidgetContainer) child.getParent();
         CellLayout.LayoutParams lp =  (CellLayout.LayoutParams) child.getLayoutParams();
         parentChildren.measureChild(child);
-
         Rect r = new Rect();
         getViewRectRelativeToSelf(dragView, r);
-
         int coord[] = new int[2];
         float childScale = child.getScaleX();
         coord[0] = lp.x + (int) (child.getMeasuredWidth() * (1 - childScale) / 2);
         coord[1] = lp.y + (int) (child.getMeasuredHeight() * (1 - childScale) / 2);
-
         // Since the child hasn't necessarily been laid out, we force the lp to be updated with
         // the correct coordinates (above) and use these to determine the final location
         float scale = getDescendantCoordRelativeToSelf((View) child.getParent(), coord);
@@ -290,7 +285,6 @@ public class DragLayer extends BaseDragLayer<Launcher> {
             // Account for the source scale of the icon (ie. from AllApps to Workspace, in which
             // the workspace may have smaller icon bounds).
             toScale = scale / dragView.getIntrinsicIconScaleFactor();
-
             // The child may be scaled (always about the center of the view) so to account for it,
             // we have to offset the position by the scaled size.  Once we do that, we can center
             // the drag view about the scaled child view.
@@ -299,7 +293,6 @@ public class DragLayer extends BaseDragLayer<Launcher> {
             if (dragView.getDragVisualizeOffset() != null) {
                 toY -=  Math.round(toScale * dragView.getDragVisualizeOffset().y);
             }
-
             toX -= (dragView.getMeasuredWidth() - Math.round(scale * child.getMeasuredWidth())) / 2;
         } else if (child instanceof FolderIcon) {
             // Account for holographic blur padding on the drag view

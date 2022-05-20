@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.launcher3.CellLayout;
-import com.android.launcher3.Hotseat;
+import com.android.launcher3.views.hotseat.Hotseat;
 import com.android.launcher3.util.Thunk;
 
 /**
@@ -21,6 +21,7 @@ public class HotseatManager {
     public HotseatManager(Hotseat mHotseat,View mHotseatSearchBox){
         this.mHotseat=mHotseat;
         this.mHotseatSearchBox=mHotseatSearchBox;
+
     }
 
 
@@ -57,7 +58,7 @@ public class HotseatManager {
     }
 
     public View getHotseatSearchBox() {
-        Log.i("lixiao","kankanviewshifoudengyunull"+(mHotseatSearchBox==null));
+
         return mHotseatSearchBox;
     }
 

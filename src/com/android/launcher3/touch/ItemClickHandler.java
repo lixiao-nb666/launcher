@@ -20,9 +20,6 @@ import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_LOCKED_USER;
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_QUIET_USER;
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SAFEMODE;
 import static com.android.launcher3.ItemInfoWithIcon.FLAG_DISABLED_SUSPENDED;
-import static com.android.launcher3.Launcher.REQUEST_BIND_PENDING_APPWIDGET;
-import static com.android.launcher3.Launcher.REQUEST_RECONFIGURE_APPWIDGET;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Process;
@@ -38,6 +35,7 @@ import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherAppWidgetProviderInfo;
+import com.android.launcher3.LauncherConfig;
 import com.android.launcher3.PromiseAppInfo;
 import com.android.launcher3.R;
 import com.android.launcher3.ShortcutInfo;
@@ -123,9 +121,9 @@ public class ItemClickHandler {
                     return;
                 }
                 addFlowHandler.startBindFlow(launcher, info.appWidgetId, info,
-                        REQUEST_BIND_PENDING_APPWIDGET);
+                        LauncherConfig.REQUEST_BIND_PENDING_APPWIDGET);
             } else {
-                addFlowHandler.startConfigActivity(launcher, info, REQUEST_RECONFIGURE_APPWIDGET);
+                addFlowHandler.startConfigActivity(launcher, info, LauncherConfig.REQUEST_RECONFIGURE_APPWIDGET);
             }
         } else {
             final String packageName = info.providerName.getPackageName();

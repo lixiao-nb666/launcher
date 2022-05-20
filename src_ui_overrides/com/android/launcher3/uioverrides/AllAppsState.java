@@ -50,7 +50,6 @@ public class AllAppsState extends LauncherState {
         if (!launcher.getSharedPrefs().getBoolean(HOME_BOUNCE_SEEN, false)) {
             launcher.getSharedPrefs().edit().putBoolean(HOME_BOUNCE_SEEN, true).apply();
         }
-
         AbstractFloatingView.closeAllOpenViews(launcher);
         dispatchWindowStateChanged(launcher);
     }

@@ -39,6 +39,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -90,6 +91,7 @@ import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.WallpaperOffsetInterpolator;
+import com.android.launcher3.views.hotseat.Hotseat;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
@@ -1740,8 +1742,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return false;
     }
 
-    boolean createUserFolderIfNecessary(View newView, long container, CellLayout target,
-            int[] targetCell, float distance, boolean external, DragView dragView) {
+    public boolean createUserFolderIfNecessary(View newView, long container, CellLayout target,
+                                               int[] targetCell, float distance, boolean external, DragView dragView) {
         if (distance > mMaxDistanceForFolderCreation) return false;
         View v = target.getChildAt(targetCell[0], targetCell[1]);
 
@@ -1797,7 +1799,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return false;
     }
 
-    boolean addToExistingFolderIfNecessary(View newView, CellLayout target, int[] targetCell,
+   public boolean addToExistingFolderIfNecessary(View newView, CellLayout target, int[] targetCell,
             float distance, DragObject d, boolean external) {
         if (distance > mMaxDistanceForFolderCreation) return false;
 
@@ -2985,7 +2987,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
     /**
      * Returns a specific CellLayout
      */
-    CellLayout getParentCellLayoutForView(View v) {
+    public CellLayout getParentCellLayoutForView(View v) {
         ArrayList<CellLayout> layouts = getWorkspaceAndHotseatCellLayouts();
         for (CellLayout layout : layouts) {
             if (layout.getShortcutsAndWidgets().indexOfChild(v) > -1) {
@@ -3073,7 +3075,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         return value[0];
     }
 
-    void clearDropTargets() {
+    public void clearDropTargets() {
         mapOverItems(MAP_NO_RECURSE, new ItemOperator() {
             @Override
             public boolean evaluate(ItemInfo info, View v) {
@@ -3321,7 +3323,7 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         }
     }
 
-    void moveToDefaultScreen() {
+   public void moveToDefaultScreen() {
         int page = DEFAULT_PAGE;
         if (!workspaceInModalState() && getNextPage() != page) {
             snapToPage(page);

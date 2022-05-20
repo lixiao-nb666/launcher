@@ -16,6 +16,7 @@ import static com.android.launcher3.util.SystemUiController.UI_STATE_ALL_APPS;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.util.Log;
 import android.util.Property;
 import android.view.View;
 import android.view.animation.Interpolator;
@@ -151,6 +152,7 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
      */
     @Override
     public void setState(LauncherState state) {
+        Log.i("lixiao","kankanzhuangtai: setState"+state.toString());
         setProgress(state.getVerticalProgress(mLauncher));
         setAlphas(state, null, new AnimatorSetBuilder());
         onProgressAnimationEnd();
@@ -163,6 +165,7 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
     @Override
     public void setStateWithAnimation(LauncherState toState,
             AnimatorSetBuilder builder, AnimationConfig config) {
+        Log.i("lixiao","kankanzhuangtai: setStateWithAnimation"+toState.toString());
         float targetProgress = toState.getVerticalProgress(mLauncher);
         if (Float.compare(mProgress, targetProgress) == 0) {
             setAlphas(toState, config, builder);
@@ -215,11 +218,13 @@ public class AllAppsTransitionController implements StateHandler, OnDeviceProfil
             @Override
             public void onAnimationSuccess(Animator animator) {
                 onProgressAnimationEnd();
+                Log.i("lixiao","onProgressAnimationEnd");
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
                 onProgressAnimationStart();
+                Log.i("lixiao","onProgressAnimationStart");
             }
         };
     }

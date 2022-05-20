@@ -294,6 +294,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
         }
         int prevPage = mCurrentPage;
         mCurrentPage = validateNewPage(currentPage);
+        setPageListenData();
         updateCurrentPageScroll();
         notifyPageSwitchListener(prevPage);
         invalidate();
@@ -371,6 +372,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
 
         boolean isXBeforeFirstPage = mIsRtl ? (x > mMaxScrollX) : (x < 0);
         boolean isXAfterLastPage = mIsRtl ? (x < 0) : (x > mMaxScrollX);
+        Log.i("lixiao","----------kankanScrollTo:"+isXBeforeFirstPage+"--"+isXAfterLastPage);
         if (isXBeforeFirstPage) {
             super.scrollTo(mIsRtl ? mMaxScrollX : 0, y);
             if (mAllowOverScroll) {
@@ -440,12 +442,14 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             if (shouldInvalidate) {
                 invalidate();
             }
+
             return true;
         } else if (mNextPage != INVALID_PAGE && shouldInvalidate) {
             sendScrollAccessibilityEvent();
 
             int prevPage = mCurrentPage;
             mCurrentPage = validateNewPage(mNextPage);
+            setPageListenData();
             mNextPage = INVALID_PAGE;
             notifyPageSwitchListener(prevPage);
 
@@ -682,6 +686,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
     public void onViewRemoved(View child) {
         super.onViewRemoved(child);
         mCurrentPage = validateNewPage(mCurrentPage);
+        setPageListenData();
         dispatchPageCountChanged();
     }
 
@@ -819,6 +824,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.i("lixiaoOnTouch","------------onInterceptTouchEvent");
         /*
          * This method JUST determines whether we want to intercept the motion.
          * If we return true, onTouchEvent will be called and we do the actual
@@ -937,7 +943,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
 
         final int touchSlop = Math.round(touchSlopScale * mTouchSlop);
         boolean xMoved = xDiff > touchSlop;
-
+        Log.i("lixiao","kankanxMoved:"+xMoved);
         if (xMoved) {
             // Scroll if the user moved far enough along the X axis
             mTouchState = TOUCH_STATE_SCROLLING;
@@ -1084,7 +1090,9 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             break;
 
         case MotionEvent.ACTION_MOVE:
+
             if (mTouchState == TOUCH_STATE_SCROLLING) {
+
                 // Scroll to follow the motion event
                 final int pointerIndex = ev.findPointerIndex(mActivePointerId);
 
@@ -1099,13 +1107,16 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
                 // keep the remainder because we are actually testing if we've moved from the last
                 // scrolled position (which is discrete).
                 if (Math.abs(deltaX) >= 1.0f) {
+                    Log.i("lixiaoOnTouch","------------onTouchEvent---move333");
                     scrollBy((int) deltaX, 0);
                     mLastMotionX = x;
                     mLastMotionXRemainder = deltaX - (int) deltaX;
                 } else {
+                    Log.i("lixiaoOnTouch","------------onTouchEvent---move444");
                     awakenScrollBars();
                 }
             } else {
+
                 determineScrollingStart(ev);
             }
             break;
@@ -1442,6 +1453,7 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
             TimeInterpolator interpolator) {
         if (mFirstLayout) {
             setCurrentPage(whichPage);
+
             return false;
         }
 
@@ -1486,7 +1498,20 @@ public abstract class PagedView<T extends View & PageIndicator> extends ViewGrou
         }
 
         invalidate();
+
+
         return Math.abs(delta) > 0;
+    }
+
+    private PagedViewChangePageListen changePageListen;
+    public void setOnPageChangeListen(PagedViewChangePageListen changePageListen){
+        this.changePageListen=changePageListen;
+    };
+
+   public void setPageListenData(){
+        if(null!=changePageListen){
+            changePageListen.nowPage(getPageCount(),mCurrentPage);
+        }
     }
 
     public boolean scrollLeft() {

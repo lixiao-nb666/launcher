@@ -104,7 +104,6 @@ public class LauncherRootView extends InsettableFrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-
         // If the right inset is opaque, draw a black rectangle to ensure that is stays opaque.
         if (mConsumedInsets.right > 0) {
             int width = getWidth();

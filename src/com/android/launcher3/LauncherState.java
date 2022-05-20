@@ -220,6 +220,25 @@ public class LauncherState {
         return launcher.getWorkspace().getCurrentPageDescription();
     }
 
+    @Override
+    public String toString() {
+        return "LauncherState{" +
+                "ordinal=" + ordinal +
+                ", containerType=" + containerType +
+                ", disableRestore=" + disableRestore +
+                ", hasMultipleVisiblePages=" + hasMultipleVisiblePages +
+                ", workspaceAccessibilityFlag=" + workspaceAccessibilityFlag +
+                ", hasWorkspacePageBackground=" + hasWorkspacePageBackground +
+                ", transitionDuration=" + transitionDuration +
+                ", workspaceIconsCanBeDragged=" + workspaceIconsCanBeDragged +
+                ", disablePageClipping=" + disablePageClipping +
+                ", disableInteraction=" + disableInteraction +
+                ", overviewUi=" + overviewUi +
+                ", hideBackButton=" + hideBackButton +
+                ", hasSysUiScrim=" + hasSysUiScrim +
+                '}';
+    }
+
     public PageAlphaProvider getWorkspacePageAlphaProvider(Launcher launcher) {
         if (this != NORMAL || !launcher.getDeviceProfile().shouldFadeAdjacentWorkspaceScreens()) {
             return DEFAULT_ALPHA_PROVIDER;
@@ -250,6 +269,7 @@ public class LauncherState {
             launcher.getRotationHelper().setCurrentStateRequest(REQUEST_NONE);
         }
     }
+
 
     protected static void dispatchWindowStateChanged(Launcher launcher) {
         launcher.getWindow().getDecorView().sendAccessibilityEvent(TYPE_WINDOW_STATE_CHANGED);
