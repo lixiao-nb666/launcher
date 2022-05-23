@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.launcher3.CellLayout;
@@ -41,6 +42,7 @@ import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.appliction.MyApplication;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.logging.UserEventDispatcher.LogContainerProvider;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
@@ -48,7 +50,7 @@ import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Target;
 
-public class Hotseat extends FrameLayout implements LogContainerProvider, Insettable {
+public class Hotseat extends LinearLayout implements LogContainerProvider, Insettable {
 
     private final Launcher mLauncher;
     private CellLayout mContent;
@@ -69,9 +71,16 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
         mLauncher = Launcher.getLauncher(context);
     }
 
+    private HotseatListen hotseatListen;
+
+    public void setHotseatListen(HotseatListen hotseatListen){
+        this.hotseatListen=hotseatListen;
+    }
+
     public CellLayout getLayout() {
         return mContent;
     }
+
 
     /* Get the orientation invariant order of the item in the hotseat for persistence. */
     public int getOrderInHotseat(int x, int y) {
@@ -91,6 +100,23 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
     protected void onFinishInflate() {
         super.onFinishInflate();
         mContent = findViewById(R.id.layout);
+        findViewById(R.id.iv_show_all_app).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null!=hotseatListen){
+                    hotseatListen.nowNeedShowAllAppView();
+                }
+            }
+        });
+        initCellLayoutLP();
+
+    }
+
+    private void initCellLayoutLP(){
+        mContent .setBackgroundResource(R.drawable.hotseat_bg);
+
+
+
     }
 
    public void resetLayout(boolean hasVerticalHotseat) {
@@ -118,6 +144,7 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
         }
        Log.i("lixiao","kankancell多大:"+idp.numHotseatIcons);
         if (!FeatureFlags.NO_ALL_APPS_ICON) {
+            Log.i("lixiao","kankancell多大:111");
             // Add the Apps button
             Context context = getContext();
             DeviceProfile grid = mLauncher.getDeviceProfile();
@@ -153,7 +180,9 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
             int y = getCellYFromOrder(allAppsButtonRank);
             CellLayout.LayoutParams lp = new CellLayout.LayoutParams(x, y, 1, 1);
             lp.canReorder = false;
+            allAppsButton.setBackgroundColor(Color.RED);
             mContent.addViewToCellLayout(allAppsButton, -1, allAppsButton.getId(), lp, true);
+            Log.i("lixiao","kankancell多大:333");
         }
     }
 
@@ -167,12 +196,14 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // We don't want any clicks to go through to the hotseat unless the workspace is in
         // the normal state or an accessible drag is in progress.
+        Log.i("lixiao","kankancell多大:22");
         return !mLauncher.getWorkspace().workspaceIconsCanBeDragged() &&
                 !mLauncher.getAccessibilityDelegate().isInAccessibleDrag();
     }
 
     @Override
     public void fillInLogContainerData(View v, ItemInfo info, Target target, Target targetParent) {
+        Log.i("lixiao","kankancell多大:33");
         target.gridX = info.cellX;
         target.gridY = info.cellY;
         targetParent.containerType = ContainerType.HOTSEAT;
@@ -180,50 +211,60 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
 
     @Override
     public void setInsets(Rect insets) {
+        Log.i("lixiao","kankancell多大:44"+insets.toString());
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayoutParams();
         DeviceProfile grid = mLauncher.getDeviceProfile();
-        switch (showType){
-            case DEF:
-                if (grid.isVerticalBarLayout()) {
-                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    if (grid.isSeascape()) {
-                        lp.gravity = Gravity.LEFT;
-                        lp.width = grid.hotseatBarSizePx + insets.left;
-                    } else {
-                        lp.gravity = Gravity.RIGHT;
-                        lp.width = grid.hotseatBarSizePx + insets.right;
-                    }
-                } else {
-                    lp.gravity = Gravity.BOTTOM;
-                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    lp.height = grid.hotseatBarSizePx + insets.bottom;
-                }
-                break;
-            case LEFT:
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.gravity = Gravity.LEFT;
-                lp.width = grid.hotseatBarSizePx + insets.left;
-                break;
-            case RIGHT:
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.gravity = Gravity.RIGHT;
-                lp.width = grid.hotseatBarSizePx + insets.right;
-                break;
-            case TOP:
-                lp.gravity = Gravity.TOP;
-                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.height = grid.hotseatBarSizePx + insets.top;
-                break;
-            case BOTTOM:
-                lp.gravity = Gravity.BOTTOM;
-                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.height = grid.hotseatBarSizePx + insets.bottom;
-                break;
-        }
+//        switch (showType){
+//            case DEF:
+//                if (grid.isVerticalBarLayout()) {
+//                    lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    if (grid.isSeascape()) {
+//                        lp.gravity = Gravity.LEFT;
+//                        lp.width = grid.hotseatBarSizePx + insets.left;
+//                    } else {
+//                        lp.gravity = Gravity.RIGHT;
+//                        lp.width = grid.hotseatBarSizePx + insets.right;
+//                    }
+//                } else {
+//                    lp.gravity = Gravity.BOTTOM;
+//                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    lp.height = grid.hotseatBarSizePx + insets.bottom;
+//                }
+//                break;
+//            case LEFT:
+//                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                lp.gravity = Gravity.LEFT;
+//                lp.width = grid.hotseatBarSizePx + insets.left;
+//                break;
+//            case RIGHT:
+//                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                lp.gravity = Gravity.RIGHT;
+//                lp.width = grid.hotseatBarSizePx + insets.right;
+//                break;
+//            case TOP:
+//                lp.gravity = Gravity.TOP;
+//                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                lp.height = grid.hotseatBarSizePx + insets.top;
+//                break;
+//            case BOTTOM:
+////                lp.gravity = Gravity.BOTTOM;
+//                lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                lp.height = grid.hotseatBarSizePx + insets.bottom;
+//                break;
+//        }
+//        Rect padding = grid.getHotseatLayoutPadding();
+//        getLayout().setPadding(padding.left, padding.top, padding.right, padding.bottom);
+//        getLayout().setFixedSize(744,128);
 
-        Rect padding = grid.getHotseatLayoutPadding();
-        getLayout().setPadding(padding.left, padding.top, padding.right, padding.bottom);
-        setLayoutParams(lp);
+//        lp.gravity = Gravity.BOTTOM;
+////
+////        lp.height= grid.hotseatBarSizePx ;
+//                        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//                        lp.height = 112;
+//        lp.bottomMargin=24;
+//        setLayoutParams(lp);
+
+//        setBackgroundColor(Color.GREEN);
         InsettableFrameLayout.dispatchInsets(this, insets);
 
     }
@@ -236,7 +277,6 @@ public class Hotseat extends FrameLayout implements LogContainerProvider, Insett
         }
         showType=setShowType;
         resetLayout(mHasVerticalHotseat);
-
     }
 
 

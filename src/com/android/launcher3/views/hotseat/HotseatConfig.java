@@ -11,6 +11,8 @@ public class HotseatConfig {
     //横屏的时候显示的数量
     public static final int ShowNumb=6;
 
+    public static final int HotSeart_Cell_H=80;
+
 
 
 }

@@ -166,6 +166,7 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
         // Update grid size
         for (int i = getPageCount() - 1; i >= 0; i--) {
             getPageAt(i).setGridSize(mGridCountX, mGridCountY);
+            Log.i("lixiao","kankansizeCount:"+mGridCountX+"-----"+mGridCountY);
         }
     }
 
@@ -260,7 +261,7 @@ public class FolderPagedView extends PagedView<PageIndicatorDots> {
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);
         page.setGridSize(mGridCountX, mGridCountY);
-
+        Log.i("lixiao","kankansizeCount111:"+mGridCountX+"-----"+mGridCountY);
         addView(page, -1, generateDefaultLayoutParams());
         return page;
     }

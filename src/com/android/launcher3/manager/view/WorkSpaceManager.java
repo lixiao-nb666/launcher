@@ -83,6 +83,13 @@ public class WorkSpaceManager {
         mWorkspace.addView(demoView);
     }
 
+    public CellLayout getDemoView(){
+        CellLayout demoView=new CellLayout(mWorkspace.getContext());
+        demoView.setLayoutParams(new CellLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)));
+        demoView.setBackgroundResource(R.drawable.innocn);
+        return  getDemoView();
+    }
+
     private void setWorkspaceLoading(boolean value) {
         mWorkspaceLoading = value;
     }

@@ -114,6 +114,7 @@ import com.android.launcher3.util.UiThreadHelper;
 import com.android.launcher3.util.ViewOnDrawExecutor;
 import com.android.launcher3.views.OptionsPopupView;
 import com.android.launcher3.views.hotseat.Hotseat;
+import com.android.launcher3.views.hotseat.HotseatListen;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
@@ -143,6 +144,13 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     private Configuration mOldConfig;
     public AllAppManager allAppManager;
     public HotseatManager hotseatManager;
+    public HotseatListen hotseatListen=new HotseatListen() {
+        @Override
+        public void nowNeedShowAllAppView() {
+            mStateManager.goToState(ALL_APPS,true);
+        }
+    };
+
     private WorkSpaceManager workSpaceManager;
     private DragManager dragManager;
     private DropBarManager dropBarManager;
@@ -235,8 +243,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             public void onClick(View v) {
                 Log.i("lixiao","fskjflksnowWoyaojiafksjdflk1111");
 //                workSpaceManager.addDemo();
-                mStateManager.goToState(ALL_APPS);
-
+//                mStateManager.goToState(ALL_APPS);
+//                hotseatManager.getHotseat().getLayout()
             }
         });
 
@@ -799,6 +807,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
         mOverviewPanel = findViewById(R.id.overview_panel);
         Hotseat mHotseat = findViewById(R.id.hotseat);
+        mHotseat.setHotseatListen(hotseatListen);
         View mHotseatSearchBox = findViewById(R.id.search_container_hotseat);
         hotseatManager=new HotseatManager(mHotseat,mHotseatSearchBox);
         mLauncherView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -853,6 +862,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         favorite.setOnClickListener(ItemClickHandler.INSTANCE);
         favorite.setOnFocusChangeListener(mFocusHandler);
 
+        Log.i("lixiao","chuangjianshitu:"+info);
         return favorite;
     }
 
@@ -2109,6 +2119,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
      * $ adb shell dumpsys activity com.android.launcher3.Launcher [--all]
      */
     @Override
+
     public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
         super.dump(prefix, fd, writer, args);
         if (args.length > 0 && TextUtils.equals(args[0], "--all")) {

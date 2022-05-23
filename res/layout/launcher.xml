@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+
             android:theme="@style/HomeScreenElementTheme"
             launcher:pageIndicator="@+id/page_indicator" />
 
@@ -77,8 +78,10 @@
         <include
             android:id="@+id/hotseat"
             layout="@layout/hotseat"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="24px"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="112px" />
 
         <TextView
             android:id="@+id/tv_set_hotseat_show_type"

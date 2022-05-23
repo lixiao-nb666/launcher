@@ -871,6 +871,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
      */
     private void addInScreen(View child, long container, long screenId, int x, int y,
             int spanX, int spanY) {
+
+        Log.i("lixiao","addInScreen:--------kankan");
         if (container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
             if (getScreenWithId(screenId) == null) {
                 Log.e(TAG, "Skipping child, screenId " + screenId + " not found");
@@ -886,16 +888,20 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
 
         final CellLayout layout;
         if (container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
-            layout = mLauncher.hotseatManager.getHotseat().getLayout();
+
+            Log.i("lixiao","addInScreen:--------kankan--wanwan:11");
+            layout = mLauncher.hotseatManager.getCellLayout();
 
             // Hide folder title in the hotseat
             if (child instanceof FolderIcon) {
                 ((FolderIcon) child).setTextVisible(false);
             }
         } else {
+            Log.i("lixiao","addInScreen:--------kankan--wanwan:22");
             // Show folder title if not in the hotseat
             if (child instanceof FolderIcon) {
                 ((FolderIcon) child).setTextVisible(true);
+                Log.i("lixiao","addInScreen:--------kankan--wanwan:33");
             }
             layout = getScreenWithId(screenId);
         }
@@ -915,12 +921,16 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         if (spanX < 0 && spanY < 0) {
             lp.isLockedToGrid = false;
         }
-
+        Log.i("lixiao","addInScreen:--------kankan--lp????:"+lp.width+"---"+lp.height+"--");
         // Get the canonical child id to uniquely represent this view in this screen
         ItemInfo info = (ItemInfo) child.getTag();
         int childId = mLauncher.getViewIdForItem(info);
 
         boolean markCellsAsOccupied = !(child instanceof Folder);
+
+//        lp.width=1000;
+//        lp.height=94;
+//        lp.bottomMargin=40;
         if (!layout.addViewToCellLayout(child, -1, childId, lp, markCellsAsOccupied)) {
             // TODO: This branch occurs when the workspace is adding views
             // outside of the defined grid

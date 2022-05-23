@@ -20,12 +20,15 @@ import static android.view.MotionEvent.ACTION_DOWN;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.launcher3.CellLayout.ContainerType;
+import com.android.launcher3.views.hotseat.HotseatConfig;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 
 public class ShortcutAndWidgetContainer extends ViewGroup {
@@ -121,12 +124,29 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
         } else {
             lp.setup(mCellWidth, mCellHeight, invertLayoutHorizontally(), mCountX);
             // Center the icon/folder
+
             int cHeight = getCellContentHeight();
+//            if( mContainerType == CellLayout.HOTSEAT){
+//                int cellPaddingX = 12;
+//                int cellPaddingY=16;
+//                child.setBackgroundColor(Color.RED);
+////                child.setPadding(cellPaddingX, cellPaddingY, cellPaddingX, cellPaddingY);
+//                Log.i("lixiao","kankanH111111:"+cHeight+"---P-Y:"+cellPaddingY+"---"+cellPaddingX);
+//            }else {
+//
+//            }
+
             int cellPaddingY = (int) Math.max(0, ((lp.height - cHeight) / 2f));
             int cellPaddingX = mContainerType == CellLayout.WORKSPACE
                     ? profile.workspaceCellPaddingXPx
                     : (int) (profile.edgeMarginPx / 2f);
             child.setPadding(cellPaddingX, cellPaddingY, cellPaddingX, 0);
+            Log.i("lixiao","kankanH111222:"+cHeight+"---P-Y:"+cellPaddingY+"---"+cellPaddingX);
+
+
+
+
+
         }
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY);
         int childheightMeasureSpec = MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.EXACTLY);

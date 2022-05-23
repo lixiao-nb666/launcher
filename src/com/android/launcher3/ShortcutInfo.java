@@ -200,4 +200,6 @@ public class ShortcutInfo extends ItemInfoWithIcon {
         }
         return cn;
     }
+
+
 }

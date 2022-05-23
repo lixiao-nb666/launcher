@@ -25,6 +25,7 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewDebug;
@@ -137,7 +138,9 @@ public class DropTargetBar extends FrameLayout
 
             for (ButtonDropTarget button : mDropTargets) {
                 if (button.getVisibility() != GONE) {
-                    button.setTextVisible(false);
+
+                    Log.i("lixiao","kankantextxianshibu11：111"+widthSpec+"--"+heightSpec);
+                    button.setTextVisible(true);
                     button.measure(widthSpec, heightSpec);
                 }
             }
@@ -155,6 +158,7 @@ public class DropTargetBar extends FrameLayout
             int heightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
             for (ButtonDropTarget button : mDropTargets) {
                 if (button.getVisibility() != GONE) {
+                    Log.i("lixiao","kankantextxianshibu11：222"+textVisible);
                     button.setTextVisible(textVisible);
                     button.measure(widthSpec, heightSpec);
                 }

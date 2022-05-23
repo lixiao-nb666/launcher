@@ -562,6 +562,9 @@ public class CellLayout extends ViewGroup {
             boolean markCells) {
         final LayoutParams lp = params;
 
+        Log.i("lixiao","addInScreen:--------kankan--lp1111:"+lp.width+"---"+index);
+        Log.i("lixiao","addInScreen:--------kankan--lp2222:"+child.getLayoutParams().width);
+
         // Hotseat icons - remove text
         if (child instanceof BubbleTextView) {
             BubbleTextView bubbleChild = (BubbleTextView) child;
@@ -591,6 +594,8 @@ public class CellLayout extends ViewGroup {
         }
         return false;
     }
+
+
 
     @Override
     public void removeAllViews() {
@@ -970,7 +975,10 @@ public class CellLayout extends ViewGroup {
                         // outline offset
                         left += dragOffset.x + ((mCellWidth * spanX) - dragRegion.width()) / 2;
                         int cHeight = getShortcutsAndWidgets().getCellContentHeight();
+
                         int cellPaddingY = (int) Math.max(0, ((mCellHeight - cHeight) / 2f));
+                        Log.i("lixiao","kankanH:"+cHeight+"---P-Y:"+cellPaddingY);
+
                         top += dragOffset.y + cellPaddingY;
                     } else {
                         // Center the drag outline in the cell

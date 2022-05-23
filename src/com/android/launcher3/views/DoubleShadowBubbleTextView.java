@@ -46,6 +46,7 @@ public class DoubleShadowBubbleTextView extends BubbleTextView {
         super(context, attrs, defStyle);
         mShadowInfo = new ShadowInfo(context, attrs, defStyle);
         setShadowLayer(mShadowInfo.ambientShadowBlur, 0, 0, mShadowInfo.ambientShadowColor);
+        setBackgroundColor(Color.RED);
     }
 
     @Override

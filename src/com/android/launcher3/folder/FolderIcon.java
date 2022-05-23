@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -504,6 +505,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
     }
 
     public void setTextVisible(boolean visible) {
+        Log.i("lixiao","kankantextxianshibu:"+visible);
         if (visible) {
             mFolderName.setVisibility(VISIBLE);
         } else {

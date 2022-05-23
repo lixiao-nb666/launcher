@@ -33,6 +33,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -351,6 +352,7 @@ public abstract class ButtonDropTarget extends TextView
     }
 
     public void setTextVisible(boolean isVisible) {
+        Log.i("lixiao","kankantextxianshibu11："+isVisible);
         CharSequence newText = isVisible ? mText : "";
         if (mTextVisible != isVisible || !TextUtils.equals(newText, getText())) {
             mTextVisible = isVisible;

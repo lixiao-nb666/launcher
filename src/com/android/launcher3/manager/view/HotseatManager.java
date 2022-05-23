@@ -38,6 +38,7 @@ public class HotseatManager {
             return null;
         }
     }
+
     public void resetLayout(boolean isVerticalBarLayout){
         if (mHotseat != null) {
             mHotseat.resetLayout(isVerticalBarLayout);
@@ -58,7 +59,6 @@ public class HotseatManager {
     }
 
     public View getHotseatSearchBox() {
-
         return mHotseatSearchBox;
     }
 
